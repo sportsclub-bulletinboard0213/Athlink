@@ -1,5 +1,20 @@
-@media (max-width: 600px){
+@media (max-width: 600px) {
+  .logo {
+    font-size: 28px;    /* 文字を少し小さく */
+    margin-top: -230px; /* 画像の高さに合わせて調整 */
+  }
+  
+  .logo-2 {
+    font-size: 14px;
+  }
 
+  /* ボタンがロゴとぶつからないように調整 */
+  .title-button {
+    right: 15px;
+    top: 15px;
+    padding: 5px 10px;
+    font-size: 12px;
+  }
 .team-table{
   display:block;
 }
@@ -33,20 +48,67 @@
 
 
 
+/* ヘッダー部分だけ背景画像 */
+.hero {
+  position: relative;             /* オーバーレイ用に必要 */
+  height: 300px;                  /* 上部分の高さ */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  text-align: center;
+  background-image: url("https://newsatcl-pctr.c.yimg.jp/t/iwiz-yn/rpr/syunsukeyamasaki/00370161/title-1697076830865.jpeg?exp=10800"); /* 画像パス */
+  background-size: cover;
+  background-position: center;
+}
 
-.logo{
+/* 半透明オーバーレイ */
+.hero::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.4);   /* 黒の透明レイヤー */
+  z-index: 0;                     /* 背景に置く */
+}
+
+/* ヘッダー内の文字は上に表示 */
+.hero h1, .hero p {
+  position: relative;
+  z-index: 1;
+}
+
+
+
+
+.logo {
   font-size: 48px;
   font-weight: bold;
   color: #4CAF50;
-  margin-bottom: 10px;
-  text-align: left;
+  text-align: left;    /* 左寄せ */
+  margin-top: -280px;  /* 写真の上に引き上げる */
+  margin-left: 5%;     /* 左端から5%の隙間（スマホでも安心） */
+  margin-bottom: 5px;
 }
-.logo-2{
-  font-size: 18px;
-  color: #333;
-  margin-top: 0;
-  text-align: left;
+
+.logo-2 {
+  font-size: 20px;
+  text-align: left;    /* 左寄せ */
+  margin-left: 4%;     /* ロゴと位置を合わせる */
+  margin-top: -20px;
+  color: rgb(120, 227, 129);
 }
+.logo, .logo-2, .title-h1, p {
+  position: relative; /* 重なり順を正しくするために必要 */
+  z-index: 10;        /* 写真より上に表示させる */
+  
+   
+}
+
+/* もしこれらを囲む div があれば、その div に以下を適用 */
+/* なければ、個別に margin-top をマイナスにします */
+
 
 
 
@@ -54,27 +116,29 @@
 
 
 .title-h1 {
-    font-size: 36px;
-    color: #333;
-    margin-bottom: 20px;
-  text-align: center;
+    font-size: 40px;
+    text-align: center;
+    color: white;
 
 
 }
 
 
 .title-h2 {
+  font-size: 24px;
   text-align: center;
-  top: 20px;
-  right: 40px;
+  top: 0px;
+   color: white;
+ 
   margin: 0;           /* 余白リセット */
+  
 }
 
 .title-button {
   font-size: 16px;
   position: fixed;
   top: 70px;           /* 少しだけ下げる */
-  right: 40px;
+  right: 65px;
   margin: 0;
   background-color: #4CAF50;
   color: white;
@@ -82,18 +146,19 @@
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  z-index: 9999;     /* これを追加（数字を大きくして最前面へ） */
 }
 body{
-font-family:sans-serif;
+font-family: 'Poppins', sans-serif;
 background:#f2f2f2;
-margin:40px;
+margin:0;
 }
 
 .sport-menu{
 display:flex;
 padding:10px;
 gap:10px;
-margin-bottom:30px;
+margin-top: 50px;
 justify-content:center; /* これを追加 */
 
 }
@@ -121,7 +186,7 @@ border-radius:4px;
 
 #posts{
 max-width: 900px;
-margin: 40px auto;
+margin: 10px auto;
 }
 
 
