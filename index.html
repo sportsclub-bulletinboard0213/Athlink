@@ -31,6 +31,12 @@
 <button onclick="filterSport(event,'水泳')">水泳</button>
 <button onclick="filterSport(event,'その他')">その他</button>
 </div>
+ <!-- 地域検索フィルター -->
+  <div class="region-menu">
+    <label>地域で検索:</label>
+    <input type="text" id="regionFilter" placeholder="例：東京都">
+    <button onclick="filterRegion()">検索</button>
+  </div>
 
 
 
@@ -52,124 +58,75 @@ const client = createClient(
 "sb_publishable_6CpkprXrX-rd7F1Yx6O21g_krBbL5-T"
 );
 
-async function loadPosts(sport=""){
+async function loadPosts(sport = "", region = "") {
+  let query = client
+    .from("teams")
+    .select("*")
+    .eq("approved", true)
+    .order("id", { ascending: false });
 
-let query = client
-.from("teams")
-.select("*")
-.eq("approved", true)
-.order("id",{ascending:false});
+  if (sport != "") {
+    query = query.eq("sport", sport);
+  }
 
-if(sport!=""){
-query = query.eq("sport", sport);
+  if (region != "") {
+    query = query.ilike("location", `%${region.trim()}%`);
+  }
+
+  const { data, error } = await query;
+
+  if (error) {
+    console.error(error);
+    return;
+  }
+
+  const postArea = document.getElementById("posts");
+  postArea.innerHTML = "";
+
+  data.forEach(post => {
+    postArea.innerHTML += `
+      <table class="team-table">
+        <tr><th colspan="2" class="team-title">${post.team_name}</th></tr>
+        <tr>
+          <td class="team-img-cell"><img src="${post.image_url}" class="team-img"></td>
+          <td class="team-info-cell">${post.pr}</td>
+        </tr>
+        <tr><th>活動場所</th><td>${post.location}</td></tr>
+        <tr><th>活動時間</th><td>${post.time}</td></tr>
+        <tr><th>実績</th><td>${post.achievements}</td></tr>
+        <tr><th>チーム人数</th><td>${post.members}</td></tr>
+        <tr><th>対象</th><td>${post.target}</td></tr>
+        <tr><th>競技名</th><td>${post.sport}</td></tr>
+        <tr><th>料金</th><td>${post.fee}</td></tr>
+        <tr><th>連絡先</th><td>${post.contact}</td></tr>
+        <tr><th>sns</th><td><a href="${post.sns}" target="_blank">リンク</a></td></tr>
+      </table>
+    `;
+  });
 }
 
-const { data, error } = await query;
-
-if(error){
-console.error(error);
-return;
+// -------------------------
+// ここで filterRegion を外に出す
+function filterRegion() {
+  const region = document.getElementById("regionFilter").value;
+  const activeSportBtn = document.querySelector(".sport-menu button.active");
+  const sport = activeSportBtn ? activeSportBtn.textContent : "";
+  loadPosts(sport, region);
 }
 
-const postArea = document.getElementById("posts");
+// スポーツフィルターも外に出す
+function filterSport(event, sport) {
+  const region = document.getElementById("regionFilter").value;
+  loadPosts(sport, region);
 
-postArea.innerHTML = "";
-
-data.forEach(post=>{
-
-postArea.innerHTML +=`
-
-<table class="team-table">
-
-<tr>
-<th colspan="2" class="team-title">
-${post.team_name}
-</th>
-</tr>
-
-<tr>
-<td class="team-img-cell">
-<img src="${post.image_url}" class="team-img">
-</td>
-<td class="team-info-cell">
-${post.pr}
-</td>
-</tr>
-
-<tr>
-<th>活動場所</th>
-<td>${post.location}</td>
-</tr>
-
-<tr>
-<th>活動時間</th>
-<td>${post.time}</td>
-</tr>
-
-<tr>
-<th>実績</th>
-<td>${post.achievements}</td>
-</tr>
-
-<tr>
-<th>チーム人数</th>
-<td>${post.members}</td>
-</tr>
-
-<tr>
-<th>対象</th>
-<td>${post.target}</td>
-</tr>
-
-<tr>
-<th>競技名</th>
-<td>${post.sport}</td>
-</tr>
-
-<tr>
-<th>料金</th>
-<td>${post.fee}</td>
-</tr>
-
-<tr>
-<th>連絡先</th>
-<td>${post.contact}</td>
-</tr>
-
-<tr>
-<th>SNS</th>
-<td>
-<a href="${post.sns}" target="_blank">リンク</a>
-</td>
-</tr>
-
-</table>
-
-`;
-
-});
-
+  const buttons = document.querySelectorAll(".sport-menu button");
+  buttons.forEach(btn => btn.classList.remove("active"));
+  event.target.classList.add("active");
 }
 
-function filterSport(event,sport){
-loadPosts(sport);
-
-
-
-const buttons = document.querySelectorAll(".sport-menu button");
-
-buttons.forEach(btn=>{
-btn.classList.remove("active");
-});
-
-event.target.classList.add("active");
-}
-
-
-
-
-
+// 初期表示
 loadPosts();
+
 </script>
 </body>
 </html>
