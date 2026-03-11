@@ -58,7 +58,7 @@
   align-items: center;
   color: white;
   text-align: center;
-  background-image: url("https://newsatcl-pctr.c.yimg.jp/t/iwiz-yn/rpr/syunsukeyamasaki/00370161/title-1697076830865.jpeg?exp=10800"); /* 画像パス */
+  background-image: url("hero.webp"); /* 画像パス */
   background-size: cover;
   background-position: center;
 }
