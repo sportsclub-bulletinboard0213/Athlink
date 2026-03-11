@@ -1,177 +1,87 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>クラブ活動掲示板</title>
- 
-  <link rel="stylesheet" href="css/design.css">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
+<htm1>
+  <head>
+    <meta charset="UTF-8">
+    <title>クラブ活動掲示板</title>
+    <style>
+     input, textarea{
+        height: 30px;
+        padding: 5px;
+        box-sizing: border-box;
+        vertical-align: middle;
 
-<body>
-  <h2 class="logo">AthLink</h2>
-  <p class="logo-2">スポーツクラブ掲示板</p>
-  
+      }
+    </style>
+   
+    </head>
+    <body>
+      <form id="form">
+<h1>クラブ活動掲示板</h1>
+<P>これは小・中学生のクラブ活動を募集する掲示板です</P>
+      </form>
+      <h2>ログイン</h2>
 
-<h1 class="title-h1">クラブ活動掲示板</h1>
-<p class="title-h2">これは小・中学生のクラブ活動を募集する掲示板です</p>
+<input id="username" placeholder="ユーザー名">
+<input id="password" type="password" placeholder="パスワード">
 
-<button class="title-button" onclick="window.open('post/post.html', '_blank')">
-  投稿する
-</button>
-<div class="sport-menu">
+<button onclick="login()">ログイン</button>
 
-<button onclick="filterSport(event,'')">すべて</button>
-<button onclick="filterSport(event,'サッカー')">サッカー</button>
-<button onclick="filterSport(event,'野球')">野球</button>
-<button onclick="filterSport(event,'バスケ')">バスケ</button>
-<button onclick="filterSport(event,'バレー')">バレー</button>
-<button onclick="filterSport(event,'陸上')">陸上</button>
-<button onclick="filterSport(event,'バドミントン')">バドミントン</button>
-<button onclick="filterSport(event,'テニス')">テニス</button>
-<button onclick="filterSport(event,'水泳')">水泳</button>
-<button onclick="filterSport(event,'その他')">その他</button>
-</div>
+<p id="msg"></p>
+
+      
 
 
+</body>
+</htm1>
+
+<input id ="name" placeholder="チーム名">
+<input id ="message" placeholder="活動場所">
+<input id ="time" placeholder="活動時間">
+<input id ="member" placeholder="所属人数">
+<textarea id ="achievement" placeholder="実績"></textarea> </textarea>
+<textarea id ="url" placeholder="チームサイト"></textarea> </textarea>
+
+<button type="button" onclick="addpost()">投稿</button>
+
+<table border="1">
+    <tr>
+      <th>チーム名</th>
+      <th>活動場所</th>
+      <th>活動時間</th>
+       <th>人数</th>
+       <th>実績</th>
+       <th>チームサイト</th>
+      
+     
+    </tr>
+     <tbody id="posts"></tbody>
+   </table>
 
 
 
-
-
-
-<div id="posts"></div>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
-
-const { createClient } = supabase;
-
-const client = createClient(
-"https://tdfnajalmkfetndtsivo.supabase.co",
-"sb_publishable_6CpkprXrX-rd7F1Yx6O21g_krBbL5-T"
-);
-
-async function loadPosts(sport=""){
-
-let query = client
-.from("teams")
-.select("*")
-.eq("approved", true)
-.order("id",{ascending:false});
-
-if(sport!=""){
-query = query.eq("sport", sport);
-}
-
-const { data, error } = await query;
-
-if(error){
-console.error(error);
-return;
-}
-
-const postArea = document.getElementById("posts");
-
-postArea.innerHTML = "";
-
-data.forEach(post=>{
-
-postArea.innerHTML +=`
-
-<table class="team-table">
-
-<tr>
-<th colspan="2" class="team-title">
-${post.team_name}
-</th>
-</tr>
-
-<tr>
-<td class="team-img-cell">
-<img src="${post.image_url}" class="team-img">
-</td>
-<td class="team-info-cell">
-${post.pr}
-</td>
-</tr>
-
-<tr>
-<th>活動場所</th>
-<td>${post.location}</td>
-</tr>
-
-<tr>
-<th>活動時間</th>
-<td>${post.time}</td>
-</tr>
-
-<tr>
-<th>実績</th>
-<td>${post.achievements}</td>
-</tr>
-
-<tr>
-<th>チーム人数</th>
-<td>${post.members}</td>
-</tr>
-
-<tr>
-<th>対象</th>
-<td>${post.target}</td>
-</tr>
-
-<tr>
-<th>競技名</th>
-<td>${post.sport}</td>
-</tr>
-
-<tr>
-<th>料金</th>
-<td>${post.fee}</td>
-</tr>
-
-<tr>
-<th>連絡先</th>
-<td>${post.contact}</td>
-</tr>
-
-<tr>
-<th>SNS</th>
-<td>
-<a href="${post.sns}" target="_blank">リンク</a>
-</td>
-</tr>
-
-</table>
-
-`;
-
-});
-
-}
-
-function filterSport(event,sport){
-loadPosts(sport);
+  function addpost(){let name=document.getElementById("name").value;
+  let message=document.getElementById("message").value;
+  let time=document.getElementById("time").value;
+  let member=document.getElementById("member").value;
+  let achievement=document.getElementById("achievement").value;
+  let url=document.getElementById("url").value;
+  let posts = document.getElementById("posts");
+posts.innerHTML +=
+  "<tr>" +
+  "<td>" + name +  + "</td>" +
+  "<td>" + message + "</td>" +
+  "<td>" + time + "</td>" +
+  "<td>" + member + "</td>" +
+  "<td>" + achievement + "</td>" +
+  "<td>" + url + "</td>" +  
+  "</tr>";
+  }
 
 
 
-const buttons = document.querySelectorAll(".sport-menu button");
-
-buttons.forEach(btn=>{
-btn.classList.remove("active");
-});
-
-event.target.classList.add("active");
-}
-
-
-
-
-
-loadPosts();
+  
+  
 </script>
-</body>
-</html>
+
+
