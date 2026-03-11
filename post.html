@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>投稿ページ</title>
+
+  <link rel="stylesheet" href="../css/post.css">
+</head>
+<body>
+
+
+
+<form id="postForm">
+  <h2>チーム投稿フォーム</h2>
+
+  <label>チーム名<span class="mast">[必須]</span></label>
+  <input type="text" id="teamName" required>
+  <small>例：チーム東京</small>
+
+  <label>写真<span class="mast">[必須]</span></label>
+  <input type="file" id="image" required>
+
+  <label>活動場所<span class="mast">[必須]</span></label>
+  <input type="text" id="location" required>
+  <small>例：東京都千代田区皇居</small>
+
+  <label>活動時間<span class="mast">[必須]</span></label>
+ <textarea id="time" required></textarea>
+  <small>
+    例</small>
+    <ul>
+      <li>月曜日 10:00-12:00</li>
+      <li>水曜日 14:00-16:00</li>
+      <li>日曜日 15:00-17:00</li>
+    </ul>
+  
+
+  <label>実績</label>
+  <textarea id="achievements"></textarea>
+  <small>例：第一回全国駅伝優勝</small>
+
+  <label>PR<span class="mast">[必須]</span></label>
+  <textarea id="pr" required></textarea>
+  <small>例：〇〇県〇市で活動しているチームAです。普段は子供たちに競技の楽しさを伝えることを目的に活動しています。
+初心者も大歓迎なので、興味のある方はぜひご連絡ください！</small>
+  
+
+  <label>連絡先<span class="mast">[必須]</span></label>
+  <input type="text" id="contact" required>
+  <small>例：メールアドレス、電話番号など</small>
+
+  <label>
+  チーム人数
+  <span class="mast">[必須]</span></label>
+  <input type="text" id="members" required>
+    <small>例：10人</small>
+   
+    <label>対象<span class="mast">[必須]</span></label>
+    <input type="text" id="target" required>
+    <small>例：小学生、中学生</small>
+
+   <label>競技名<span class="mast">[必須]</span></label><br>
+    <select id="sport" required>
+<option value="">スポーツ選択</option>
+<option value="サッカー">サッカー</option>
+<option value="野球">野球</option>
+<option value="バスケ">バスケ</option>
+<option value="陸上">陸上</option>
+<option value="バドミントン">バドミントン</option>
+<option value="テニス">テニス</option>
+<option value="水泳">水泳</option>
+<option value="その他">その他</option>
+
+</select><br>
+    <label>料金<span class="mast">[必須]</span></label>
+    <input type="text" id="fee" required>
+    <small>例：無料、月額4000円</small>
+      
+    <label>SNS</label>
+     <input type="text" id="sns" >
+     <small>例：Twitter url、Instagram url</small>
+ 
+  <button type="button" onclick="addPost()">投稿する</button>
+
+</form>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+
+const { createClient } = supabase;
+
+const supabaseClient = createClient(
+"https://tdfnajalmkfetndtsivo.supabase.co",
+"sb_publishable_6CpkprXrX-rd7F1Yx6O21g_krBbL5-T"
+);
+
+async function addPost(){
+
+const form = document.getElementById("postForm");
+
+if(!form.checkValidity()){
+form.reportValidity();
+return;
+}
+
+const teamName = document.getElementById("teamName").value;
+const location = document.getElementById("location").value;
+const time = document.getElementById("time").value;
+const achievements = document.getElementById("achievements").value;
+const pr = document.getElementById("pr").value;
+
+const file = document.getElementById("image").files[0];
+const contact = document.getElementById("contact").value;
+const members = document.getElementById("members").value;
+const target = document.getElementById("target").value;
+const sport = document.getElementById("sport").value;
+const fee = document.getElementById("fee").value;
+const sns = document.getElementById("sns").value;
+
+let imageUrl = "";
+
+if(file){
+
+const fileName = Date.now() + ".png";
+
+const { error } = await supabaseClient.storage
+.from("team-images")
+.upload(fileName,file);
+
+if(error){
+alert("画像アップロード失敗: " + error.message);
+return;
+}
+
+imageUrl =
+"https://tdfnajalmkfetndtsivo.supabase.co/storage/v1/object/public/team-images/" + fileName;
+
+}
+
+const { error } = await supabaseClient
+.from("teams")
+.insert([{
+team_name: teamName,
+location: location,
+time: time,
+achievements: achievements,
+pr: pr,
+image_url: imageUrl
+}]);
+
+if(error){
+alert("投稿失敗: " + error.message);
+}else{
+alert("投稿完了。サイトの反映には管理人の承諾が必要なため、しばらくお待ちください。");
+window.location.href="../index.html";
+}
+
+}
+</script>
+</body>
+</html>
