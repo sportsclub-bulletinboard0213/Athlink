@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<head class="hero">
+<head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
@@ -11,12 +11,17 @@
 </head>
 
 <body>
-  <h2 class="logo">AthLink</h2>
-  <p class="logo-2">スポーツクラブ掲示板</p>
-  
+ <div class="hero">
+  <div class="logo">AthMutch</div>
+  <div class="logo-2">スポーツクラブ掲示板</div>
+  <h1 class="title-h1">クラブ活動掲示板</h1>
+  <p class="title-h2">これは小・中学生のクラブ活動を募集する掲示板です</p>
+</div>
+<div id="imageModal" class="modal" onclick="closeModal()">
+  <span class="close">&times;</span>
+  <img class="modal-content" id="expandedImg">
+</div>
 
-<h1 class="title-h1">クラブ活動掲示板</h1>
-<p class="title-h2">これは小・中学生のクラブ活動を募集する掲示板です</p>
 
 <a href="post.html" class="title-button" target="_blank">投稿する</a>
 <div class="sport-menu">
@@ -54,10 +59,21 @@
 
 const { createClient } = supabase;
 
+
 const client = createClient(
-"https://tdfnajalmkfetndtsivo.supabase.co",
-"sb_publishable_6CpkprXrX-rd7F1Yx6O21g_krBbL5-T"
+  "https://tdfnajalmkfetndtsivo.supabase.co",
+  "sb_publishable_6CpkprXrX-rd7F1Yx6O21g_krBbL5-T"
 );
+
+// 拡大表示用の関数（関数の外に出しておきます）
+function openModal(src) {
+  document.getElementById("imageModal").style.display = "flex";
+  document.getElementById("expandedImg").src = src;
+}
+
+function closeModal() {
+  document.getElementById("imageModal").style.display = "none";
+}
 
 async function loadPosts(sport = "", region = "") {
   let query = client
@@ -82,32 +98,38 @@ async function loadPosts(sport = "", region = "") {
   }
 
   const postArea = document.getElementById("posts");
-  postArea.innerHTML = "";
+  postArea.innerHTML = ""; // 一旦中身を空にする
 
+  // データを表示するループ（ここに onclick を入れます）
   data.forEach(post => {
     postArea.innerHTML += `
-      <table class="team-table">
-        <tr><th colspan="2" class="team-title">${post.team_name}</th></tr>
-        <tr>
-          <td class="team-img-cell"><img src="${post.image_url}" class="team-img"></td>
-          <td class="team-info-cell">${post.pr}</td>
-        </tr>
-        <tr><th>活動場所</th><td>${post.location}</td></tr>
-        <tr><th>活動時間</th><td>${post.time}</td></tr>
-        <tr><th>実績</th><td>${post.achievements}</td></tr>
-        <tr><th>チーム人数</th><td>${post.members}</td></tr>
-        <tr><th>対象</th><td>${post.target}</td></tr>
-        <tr><th>競技名</th><td>${post.sport}</td></tr>
-        <tr><th>料金</th><td>${post.fee}</td></tr>
-        <tr><th>連絡先</th><td>${post.contact}</td></tr>
-        <tr><th>sns</th><td><a href="${post.sns}" target="_blank">リンク</a></td></tr>
-      </table>
+      <div class="team-card"> 
+        <table class="team-table-top">
+          <tr><th colspan="2" class="team-title">${post.team_name}</th></tr>
+          <tr>
+            <td class="team-img-cell">
+              <img src="${post.image_url}" class="team-img" onclick="openModal('${post.image_url}')">
+            </td>
+            <td class="team-info-cell">${post.pr}</td>
+          </tr>
+        </table>
+        <div class="horizontal-scroll-wrapper">
+          <div class="info-item"><strong>活動場所</strong><br>${post.location}</div>
+          <div class="info-item"><strong>活動時間</strong><br>${post.time}</div>
+          <div class="info-item"><strong>実績</strong><br>${post.achievements}</div>
+          <div class="info-item"><strong>チーム人数</strong><br>${post.members}</div>
+          <div class="info-item"><strong>対象</strong><br>${post.target}</div>
+          <div class="info-item"><strong>競技名</strong><br>${post.sport}</div>
+          <div class="info-item"><strong>料金</strong><br>${post.fee}</div>
+          <div class="info-item"><strong>連絡先</strong><br>${post.contact}</div>
+          <div class="info-item"><strong>SNS</strong><br><a href="${post.sns}" target="_blank">リンク</a></div>
+        </div>
+      </div>
     `;
   });
 }
 
-// -------------------------
-// ここで filterRegion を外に出す
+// フィルタリング用関数
 function filterRegion() {
   const region = document.getElementById("regionFilter").value;
   const activeSportBtn = document.querySelector(".sport-menu button.active");
@@ -115,7 +137,6 @@ function filterRegion() {
   loadPosts(sport, region);
 }
 
-// スポーツフィルターも外に出す
 function filterSport(event, sport) {
   const region = document.getElementById("regionFilter").value;
   loadPosts(sport, region);
@@ -129,5 +150,6 @@ function filterSport(event, sport) {
 loadPosts();
 
 </script>
+
 </body>
 </html>

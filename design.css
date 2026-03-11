@@ -1,236 +1,236 @@
-@media (max-width: 600px) {
-  .logo {
-    font-size: 28px;    /* 文字を少し小さく */
-    margin-top: -230px; /* 画像の高さに合わせて調整 */
-  }
-  
-  .logo-2 {
-    font-size: 14px;
-  }
-
-  /* ボタンがロゴとぶつからないように調整 */
-  .title-button {
-    right: 15px;
-    top: 15px;
-    padding: 5px 10px;
-    font-size: 12px;
-  }
-.team-table{
-  display:block;
+/* --- 基本設定 --- */
+body {
+  font-family: 'Poppins', sans-serif;
+  background: #f2f2f2;
+  margin: 0;
 }
 
-.team-table tr{
-  display:block;
-}
-
-.team-table th{
-  display:block;
-  width:100%;
-  background:#f0f0f0;
-}
-
-.team-table td{
-  display:block;
-  width:100%;
-}
-
-.team-img-cell{
-  width:100%;
-  text-align:center;
-}
-
-.team-img{
-  width:100%;
-  max-width:350px;
-}
-
-}
-
-
-
-/* ヘッダー部分だけ背景画像 */
+/* --- ヘッダー（画像背景）エリア --- */
 .hero {
-  position: relative;             /* オーバーレイ用に必要 */
-  height: 300px;                  /* 上部分の高さ */
+  position: relative;
+  height: 300px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items: center;    /* 基本はすべて中央寄せ */
   color: white;
   text-align: center;
-  background-image: url("hero.webp"); /* 画像パス */
+  background-image: url("hero.webp");
   background-size: cover;
   background-position: center;
+  overflow: hidden;
 }
 
-/* 半透明オーバーレイ */
+/* 半透明の重ね。画像が見えにくい場合はここを調整 */
 .hero::before {
   content: "";
   position: absolute;
   top: 0; left: 0;
   width: 100%; height: 100%;
-  background: rgba(0,0,0,0.4);   /* 黒の透明レイヤー */
-  z-index: 0;                     /* 背景に置く */
-}
-
-/* ヘッダー内の文字は上に表示 */
-.hero h1, .hero p {
-  position: relative;
+  background: rgba(0,0,0,0.3); /* 0.3は暗さ。必要なければ消してOK */
   z-index: 1;
 }
 
-
-
+/* ロゴとメインタイトル（画像の上に載せるもの） */
+.logo, .logo-2 {
+  position: absolute;    /* 自由配置モードに切り替え */
+  left: 5%;              /* 左から5%の位置 */
+  text-align: left;
+  z-index: 10;
+}
 
 .logo {
-  font-size: 48px;
+  top: 40px;             /* 上からの位置（調整してください） */
+  font-size: 40px;       /* 少しサイズ調整 */
   font-weight: bold;
   color: #4CAF50;
-  text-align: left;    /* 左寄せ */
-  margin-top: -280px;  /* 写真の上に引き上げる */
-  margin-left: 5%;     /* 左端から5%の隙間（スマホでも安心） */
-  margin-bottom: 5px;
 }
 
 .logo-2 {
-  font-size: 20px;
-  text-align: left;    /* 左寄せ */
-  margin-left: 4%;     /* ロゴと位置を合わせる */
-  margin-top: -20px;
+  top: 85px;             /* logoの下にくるように調整 */
+  font-size: 18px;
   color: rgb(120, 227, 129);
 }
-.logo, .logo-2, .title-h1, p {
-  position: relative; /* 重なり順を正しくするために必要 */
-  z-index: 10;        /* 写真より上に表示させる */
-  
-   
-}
-
-/* もしこれらを囲む div があれば、その div に以下を適用 */
-/* なければ、個別に margin-top をマイナスにします */
-
-
-
-
-
-
 
 .title-h1 {
-    font-size: 40px;
-    text-align: center;
-    color: white;
-
-
+ font-size: 36px;
+  color: white;
+  margin-top: 40px;      /* ロゴと被らないように少し下げる */
+  position: relative;
+  z-index: 10;
 }
-
-
 .title-h2 {
-  font-size: 24px;
-  text-align: center;
-  top: 0px;
-   color: white;
- 
-  margin: 0;           /* 余白リセット */
-  
+  font-size: 18px;
+  color: white;
+  margin-top: 10px;
+  position: relative;
+  z-index: 10;
 }
 
+/* --- 投稿ボタン（固定） --- */
 .title-button {
   font-size: 16px;
   position: fixed;
-  top: 70px;           /* 少しだけ下げる */
-  right: 65px;
-  margin: 0;
+  top: 20px; /* 位置を調整 */
+  right: 100px;
   background-color: #4CAF50;
   color: white;
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  z-index: 9999;     /* これを追加（数字を大きくして最前面へ） */
-}
-body{
-font-family: 'Poppins', sans-serif;
-background:#f2f2f2;
-margin:0;
+  z-index: 9999;
 }
 
-.sport-menu{
-display:flex;
-padding:10px;
-gap:10px;
-margin-top: 50px;
-justify-content:center; /* これを追加 */
-
+/* --- チーム表示カード --- */
+.team-card {
+  background: white;
+  max-width: 900px;
+  margin: 20px auto;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  border-radius: 8px;
+  overflow: hidden;
 }
 
-.sport-menu button {
-  background: none;        /* ボタンの背景消す */
-  border: none;            /* 枠消す */
-  border-bottom: 2px solid black; /* 下線 */
-  margin-right: 15px;      /* ボタンの間隔 */
-  padding-bottom: 3px;
-  font-size: 16px;
+.team-title {
+  font-size: 24px;
+  font-weight: bold;
+  padding: 15px;
+  background: #f5f5f5;
+  color: #333;
+}
+
+.team-table-top {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.team-img-cell { width: 280px; padding: 20px; }
+.team-info-cell { padding: 20px; vertical-align: top; color: #444; }
+
+.team-img {
+  width: 100%;
+  max-width: 250px;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 5px;
+  display: block;
+}
+
+/* --- 横スクロール詳細エリア --- */
+.horizontal-scroll-wrapper {
+  display: flex;
+  overflow-x: auto;
+  white-space: nowrap;
+  background: #fdfdfd;
+  padding: 15px;
+  gap: 10px;
+  border-top: 1px solid #eee;
+  -webkit-overflow-scrolling: touch;
+}
+
+.info-item {
+  flex: 0 0 auto;
+  min-width: 140px;
+  background: white;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #eee;
+  font-size: 14px;
+}
+
+.info-item strong {
+  display: block;
+  color: #4CAF50;
+  font-size: 12px;
+  margin-bottom: 3px;
+}
+/* モーダル（背景） */
+.modal {
+  display: none; /* 最初は隠す */
+  position: fixed;
+  z-index: 10000; /* ボタン(9999)より上に */
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.9); /* 背景を真っ暗に */
+  justify-content: center;
+  align-items: center;
+}
+
+/* 拡大される画像 */
+.modal-content {
+  max-width: 90%;
+  max-height: 90%;
+  border: 3px solid white;
+  border-radius: 5px;
+  animation: zoom 0.3s; /* ふわっと出す */
+}
+
+@keyframes zoom {
+  from {transform: scale(0.7); opacity: 0;}
+  to {transform: scale(1); opacity: 1;}
+}
+
+/* 閉じるボタン */
+.close {
+  position: absolute;
+  top: 20px;
+  right: 35px;
+  color: white;
+  font-size: 40px;
+  font-weight: bold;
   cursor: pointer;
 }
 
-.sport-menu button:hover{
-background:rgba(66, 137, 228, 0.2);
-border-radius:4px;
+/* チーム紹介の画像（クリックできることを伝える） */
+.team-img {
+  cursor: pointer;
+  transition: 0.3s;
 }
-.sport-menu button.active{
-
-background:rgba(6, 101, 225, 0.2);
-border-radius:4px;
-}
-
-
-#posts{
-max-width: 900px;
-margin: 10px auto;
+.team-img:hover {
+  opacity: 0.8;
 }
 
+/* --- スマホ用設定（600px以下） --- */
+@media (max-width: 600px) {
+  .hero { height: 250px; }
 
-.team-table{
-width:100%;
-border-collapse:collapse;
-margin-bottom:40px;
-background:white;
-box-shadow:0 2px 10px rgba(0,0,0,0.1);
-}
+  /* スマホではロゴを少し小さくして左上に固定 */
+  .logo { font-size: 24px; top: 20px; left: 15px; }
+  .logo-2 { font-size: 12px; top: 50px; left: 15px; }
 
-.team-table th{
-background:#f8f8f8;
-width:150px;
-text-align:left;
-padding:10px;
-border-top:1px solid #ddd;
-}
-
-.team-table td{
-padding:10px;
-border-top:1px solid #ddd;
-}
-
-.team-title{
-font-size:28px;
-text-align:left;
-padding:15px;
-background:#f5f5f5;
-}
+  /* タイトルは中央で、ロゴの下にくるように余白をあける */
+  .hero-h1 { 
+    font-size: 20px; 
+    margin-top: 60px; /* ロゴを避けるための余白 */
+  }
+  .title-h2 { 
+    font-size: 13px; 
+    padding: 0 20px; /* 左右に少し余白 */
+  }
 
 
+  .title-button { 
+    right: 10px; 
+    top: 10px; 
+    padding: 5px 10px; 
+    font-size: 12px; 
+  }
 
-.team-img{
-width:300px;
-height:auto;
-border-radius:5px;
+  .team-img-cell, .team-info-cell {
+    display: block;
+    width: auto;
+    padding: 15px;
+  }
+  
+  .team-img {
+    margin: 0 auto;
+    max-width: 100%;
+  }
 
-}
-
-.team-img-cell{
-width:320px;
-padding:20px;
-}
-.team-info-cell{
-padding:20px;
+  .horizontal-scroll-wrapper {
+    background: #f7f7f7;
+  }
 }
