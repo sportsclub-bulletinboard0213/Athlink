@@ -53,16 +53,16 @@ body {
 }
 
 .title-h1 {
- font-size: 36px;
+ font-size: 40px;
   color: white;
-  margin-top: 40px;      /* ロゴと被らないように少し下げる */
+  margin-top: 70px;      /* ロゴと被らないように少し下げる */
   position: relative;
   z-index: 10;
 }
 .title-h2 {
-  font-size: 18px;
+  font-size: 20px;
   color: white;
-  margin-top: 10px;
+  margin-top: 0px;
   position: relative;
   z-index: 10;
 }
