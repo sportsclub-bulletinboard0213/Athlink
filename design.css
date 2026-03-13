@@ -202,7 +202,7 @@ body {
   .logo-2 { font-size: 12px; top: 50px; left: 15px; }
 
   /* タイトルは中央で、ロゴの下にくるように余白をあける */
-  .hero-h1 { 
+  .title-h1 { 
     font-size: 20px; 
     margin-top: 60px; /* ロゴを避けるための余白 */
   }

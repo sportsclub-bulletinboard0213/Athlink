@@ -38,7 +38,6 @@
 <button onclick="filterSport(event,'陸上')">陸上</button>
 <button onclick="filterSport(event,'バドミントン')">バドミントン</button>
 <button onclick="filterSport(event,'テニス')">テニス</button>
-<button onclick="filterSport(event,'水泳')">水泳</button>
 <button onclick="filterSport(event,'その他')">その他</button>
 </div>
  <!-- 地域検索フィルター -->
@@ -47,6 +46,18 @@
     <input type="text" id="regionFilter" placeholder="例：東京都">
     <button onclick="filterRegion()">検索</button>
   </div>
+  <div class="sort-menu">
+
+<label>並び替え:</label>
+
+<select id="sortSelect" onchange="changeSort()">
+<option value="new">新着順</option>
+<option value="old">古い順</option>
+<option value="members_desc">人数多い順</option>
+<option value="members_asc">人数少ない順</option>
+</select>
+
+</div>
 
 
 
@@ -84,7 +95,21 @@ async function loadPosts(sport = "", region = "") {
     .from("teams")
     .select("*")
     .eq("approved", true)
-    .order("id", { ascending: false });
+    if(currentSort == "new"){
+query = query.order("id", { ascending:false });
+}
+
+if(currentSort == "old"){
+query = query.order("id", { ascending:true });
+}
+
+if(currentSort == "members_desc"){
+query = query.order("members", { ascending:false });
+}
+
+if(currentSort == "members_asc"){
+query = query.order("members", { ascending:true });
+}
 
   if (sport != "") {
     query = query.eq("sport", sport);
@@ -162,6 +187,16 @@ function filterSport(event, sport) {
   const buttons = document.querySelectorAll(".sport-menu button");
   buttons.forEach(btn => btn.classList.remove("active"));
   event.target.classList.add("active");
+}
+
+let currentSort = "new";
+
+function changeSort(){
+
+const sort = document.getElementById("sortSelect").value;
+currentSort = sort;
+loadPosts();
+
 }
 
 // 初期表示
