@@ -41,12 +41,13 @@
 <button onclick="filterSport(event,'その他')">その他</button>
 </div>
  <!-- 地域検索フィルター -->
-  <div class="region-menu">
-    <label>地域で検索:</label>
-    <input type="text" id="regionFilter" placeholder="例：東京都">
-    <button onclick="filterRegion()">検索</button>
-  </div>
-  <div class="sort-menu">
+  <div class="keyword-menu">
+
+<input type="text" id="keyword" placeholder="例：東京  小学生 社会人 無料 などキーワードで検索">
+
+<button onclick="searchKeyword()">検索</button>
+
+</div>
 
 <label>並び替え:</label>
 
@@ -55,6 +56,7 @@
 <option value="old">古い順</option>
 <option value="members_desc">人数多い順</option>
 <option value="members_asc">人数少ない順</option>
+
 </select>
 
 </div>
@@ -90,7 +92,7 @@ function closeModal() {
   document.getElementById("imageModal").style.display = "none";
 }
 
-async function loadPosts(sport = "", region = "") {
+async function loadPosts(sport = "", region = "", keyword = "") {
   let query = client
     .from("teams")
     .select("*")
@@ -118,13 +120,44 @@ query = query.order("members", { ascending:true });
   if (region != "") {
     query = query.ilike("location", `%${region.trim()}%`);
   }
+  if(keyword != ""){
 
-  const { data, error } = await query;
+const words = keyword.split(" ");
 
-  if (error) {
-    console.error(error);
-    return;
-  }
+words.forEach(word => {
+
+if(word == "無料"){
+query = query.eq("fee",0);
+}
+
+else if(!isNaN(word)){
+query = query.eq("fee",word);
+}
+
+else{
+
+query = query.or(
+`team_name.ilike.%${word}%,
+location.ilike.%${word}%,
+sport.ilike.%${word}%,
+target.ilike.%${word}%`
+);
+
+}
+
+});
+
+}
+
+ if(currentSort == "fee_asc"){
+query = query.order("fee",{ascending:true});
+}
+
+if(currentSort == "fee_desc"){
+query = query.order("fee",{ascending:false});
+}
+
+const { data, error } = await query;
 
  const postArea = document.getElementById("posts");
 postArea.innerHTML = "";
@@ -175,9 +208,19 @@ postArea.innerHTML = html;
 // フィルタリング用関数
 function filterRegion() {
   const region = document.getElementById("regionFilter").value;
-  const activeSportBtn = document.querySelector(".sport-menu button.active");
-  const sport = activeSportBtn ? activeSportBtn.textContent : "";
+   const activeSportBtn = document.querySelector(".sport-menu button.active"); 
+   const sport = activeSportBtn ? activeSportBtn.textContent : "";
   loadPosts(sport, region);
+}
+
+  
+function searchKeyword(){
+
+const keyword = document.getElementById("keyword").value;
+const region = document.getElementById("regionFilter").value;
+
+loadPosts("", region, keyword);
+
 }
 
 function filterSport(event, sport) {

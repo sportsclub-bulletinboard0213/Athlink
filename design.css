@@ -81,6 +81,32 @@ body {
   cursor: pointer;
   z-index: 9999;
 }
+.keyword-menu input{
+
+width:500px;   /* 横幅 */
+max-width:80%;
+padding:12px 16px;
+font-size:16px;
+border-radius:8px;
+border:2px solid #ddd;
+
+}
+
+.keyword-menu button{
+
+padding:12px 20px;
+font-size:16px;
+border:none;
+border-radius:8px;
+background:#333;
+color:white;
+cursor:pointer;
+
+}
+
+.keyword-menu button:hover{
+background:#555;
+}
 
 /* --- チーム表示カード --- */
 .team-card {
