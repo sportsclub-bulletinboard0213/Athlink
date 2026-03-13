@@ -1,0 +1,63 @@
+/* ===== チーム詳細ページ ===== */
+
+body{
+  font-family: 'Poppins', sans-serif;
+  background:#f4f6f9;
+  margin:0;
+  padding:0;
+}
+
+/* タイトル */
+h1{
+  text-align:center;
+  margin-top:40px;
+  font-size:32px;
+  font-weight:600;
+}
+
+/* チームカード */
+#team{
+  max-width:900px;
+  margin:40px auto;
+  background:white;
+  padding:40px;
+  border-radius:15px;
+  box-shadow:0 5px 20px rgba(0,0,0,0.1);
+}
+
+/* チーム名 */
+#team h2{
+  font-size:28px;
+  margin-bottom:20px;
+}
+
+/* 画像 */
+#team img{
+  width:100%;
+  max-width:500px;
+  border-radius:10px;
+  margin-bottom:25px;
+}
+
+/* PR文 */
+#team p{
+  font-size:16px;
+  line-height:1.6;
+  margin-bottom:18px;
+}
+
+/* ラベル */
+#team b{
+  font-weight:600;
+}
+
+/* SNSリンク */
+#team a{
+  color:#2c7be5;
+  text-decoration:none;
+  font-weight:600;
+}
+
+#team a:hover{
+  text-decoration:underline;
+}

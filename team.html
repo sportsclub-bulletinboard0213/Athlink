@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>チーム紹介 | ClubLink</title>
+
+<link rel="stylesheet" href="team.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+</head>
+
+<body>
+
+<h1>チーム情報</h1>
+
+<div id="team"></div>
+
+<script>
+
+const { createClient } = supabase;
+
+const client = createClient(
+"https://tdfnajalmkfetndtsivo.supabase.co",
+"sb_publishable_6CpkprXrX-rd7F1Yx6O21g_krBbL5-T"
+);
+
+// URLのidを取得
+const params = new URLSearchParams(window.location.search);
+const id = params.get("id");
+
+async function loadTeam(){
+
+const { data, error } = await client
+.from("teams")
+.select("*")
+.eq("id", id)
+.single();
+
+if(error){
+console.error(error);
+return;
+}
+
+const team = document.getElementById("team");
+
+team.innerHTML = `
+
+<h2>${data.team_name}</h2>
+
+<img src="${data.image_url}" style="max-width:400px">
+
+<p>${data.pr}</p>
+
+<p><b>活動場所</b><br>${data.location}</p>
+
+<p><b>活動時間</b><br>${data.time}</p>
+
+<p><b>実績</b><br>${data.achievements}</p>
+
+<p><b>チーム人数</b><br>${data.members}</p>
+
+<p><b>対象</b><br>${data.target}</p>
+
+<p><b>競技名</b><br>${data.sport}</p>
+
+<p><b>料金</b><br>${data.fee}</p>
+
+<p><b>連絡先</b><br>${data.contact}</p>
+
+<p><b>SNS</b><br><a href="${data.sns}" target="_blank">リンク</a></p>
+
+`;
+
+}
+
+loadTeam();
+
+</script>
+
+</body>
+</html>
